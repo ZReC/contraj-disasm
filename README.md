@@ -1,12 +1,32 @@
 # Contra (J) disasm
 
->This is the first iteration of a wannabe complete disassembly of the japanese version of Contra for NES.
+> This is the first iteration of a wannabe complete disassembly of the japanese version of Contra for NES
 
-You need the CHR banks to assemble it back, I currently don't provide the right tool to do so, but you could try [this](https://github.com/ZReC/rom-breakdown).
+## How to assemble
+
+### You need
+
+- the CHR banks to assemble it back, I currently don't provide the right tool to do so, but you could try [this](https://github.com/ZReC/rom-breakdown)
+- base-devel (arch) or build-essential (debian)
+- [openssl](https://github.com/openssl/openssl) for the checksum
+
+Then you can..
+
+```console
+cd contraj-disasm/
+make
+```
+
+..or if you need a clean run
+
+```console
+cd contraj-disasm/
+make clean run
+```
 
 ## ROM specs
 
-The ROM needed to extract the CHR banks has the following checksum:
+The ROM needed to extract the CHR banks has the following specs:
 
 ```text
 Size:     262160 bytes (256 KiB)
@@ -19,9 +39,9 @@ BLAKE2sp: A970D753A851F5D16002A22E560DB2DB16AD63E375F66DD26786F629AEDFF039
 
 ## Contributing
 
-Pull requests are extremely welcome! This project is **yours**.
-
 ### *star & fork*
+
+Pull requests are extremely welcome! This project is **yours**.
 
 ---
 
@@ -47,7 +67,7 @@ Pull requests are extremely welcome! This project is **yours**.
 <tr>
 <td>
 
-``` text
+```text
 18uE6xNeqBmAQH2JRVHmzg5D2QKVkSqxRN
 ```
 
@@ -83,7 +103,7 @@ rMdG3ju8pgyVh29ELPWaDuA74CpWW6Fxns
 <tr>
 <td>
 
-``` text
+```text
 0x1A9E7259E86c2837886f6DD8B563EfeD76f83989
 ```
 
@@ -97,7 +117,7 @@ rMdG3ju8pgyVh29ELPWaDuA74CpWW6Fxns
 <tr>
 <td>
 
-``` text
+```text
 0x08ae87331ABbAa69b11FCE76734910e5bC566F57
 ```
 
