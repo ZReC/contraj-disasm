@@ -1,8 +1,29 @@
-__c000:     .hex 1e            ; $c000: 1e            Data
+; https://www.nesdev.org/wiki/INES_Mapper_023
+;   #CHR_Select_0_low($B000),_high($B001)
+;   ..
+;   #CHR_Select_2…7_($C000-$EFFF)
+chr_s0l = $b000
+chr_s0h = $b001
+chr_s1l = $b002
+chr_s1h = $b003
+chr_s2l = $c000
+chr_s2h = $c001
+chr_s3l = $c002
+chr_s3h = $c003
+chr_s4l = $d000
+chr_s4h = $d001
+chr_s5l = $d002
+chr_s5h = $d003
+chr_s6l = $e000
+chr_s6h = $e001
+chr_s7l = $e002
+chr_s7h = $e003
+
+            .hex 1e            ; $c000: 1e            Data
 
 ;-------------------------------------------------------------------------------
 __c001:     inc $1a            ; $c001: e6 1a     
-__c003:     lda $18            ; $c003: a5 18     
+            lda $18            ; $c003: a5 18     
             beq __c00e         ; $c005: f0 07     
             cmp #$03           ; $c007: c9 03     
             bcs __c00e         ; $c009: b0 03     
@@ -2160,14 +2181,9 @@ __cfd9:     lda $30            ; $cfd9: a5 30
             sta $0700,x        ; $cff8: 9d 00 07  
             sta $0702,x        ; $cffb: 9d 02 07  
             lda #$04           ; $cffe: a9 04     
-__d000:     .hex 9d            ; $d000: 9d            Data
-__d001:     .hex 01            ; $d001: 01            Data
-__d002:     .hex 07            ; $d002: 07            Data
-__d003:     .hex a9            ; $d003: a9            Data
-
-;-------------------------------------------------------------------------------
-            .hex 23 9d         ; $d004: 23 9d     Invalid Opcode - RLA ($9d,x)
-            .hex 03 07         ; $d006: 03 07     Invalid Opcode - SLO ($07,x)
+            sta $0701,x        ; $d000: 9d 01 07  
+            lda #$23           ; $d003: a9 23     
+            sta $0703,x        ; $d006: 9d 03 07  
             lda #$c2           ; $d008: a9 c2     
             sta $0704,x        ; $d00a: 9d 04 07  
             tya                ; $d00d: 98        
@@ -4252,12 +4268,8 @@ __dff6:     tya                ; $dff6: 98
             adc $fc            ; $dffa: 65 fc     
             bcs __e002         ; $dffc: b0 04     
             cmp #$f0           ; $dffe: c9 f0     
-__e000:     .hex 90            ; $e000: 90            Data
-__e001:     .hex 02            ; $e001: 02            Data
-__e002:     .hex 69            ; $e002: 69        Suspected data
-__e003:     .hex 0f            ; $e003: 0f            Data
-
-;-------------------------------------------------------------------------------
+            bcc $E004          ; $e000: 90 02     
+__e002:     adc #$0F           ; $e002: 69 0f     
             sta $11            ; $e004: 85 11     
             lda $13            ; $e006: a5 13     
             clc                ; $e008: 18        
@@ -7607,61 +7619,61 @@ __fabe:     ldy #$18           ; $fabe: a0 18
 
 ;-------------------------------------------------------------------------------
 __face:     lda $07f0          ; $face: ad f0 07  
-            sta $b000          ; $fad1: 8d 00 b0  
+            sta chr_s0l        ; $fad1: 8d 00 b0  
             lsr                ; $fad4: 4a        
             lsr                ; $fad5: 4a        
             lsr                ; $fad6: 4a        
             lsr                ; $fad7: 4a        
-            sta $b001          ; $fad8: 8d 01 b0  
+            sta chr_s0h        ; $fad8: 8d 01 b0  
             lda $07f1          ; $fadb: ad f1 07  
-            sta $b002          ; $fade: 8d 02 b0  
+            sta chr_s1l        ; $fade: 8d 02 b0  
             lsr                ; $fae1: 4a        
             lsr                ; $fae2: 4a        
             lsr                ; $fae3: 4a        
             lsr                ; $fae4: 4a        
-            sta $b003          ; $fae5: 8d 03 b0  
+            sta chr_s1h        ; $fae5: 8d 03 b0  
             lda $07f2          ; $fae8: ad f2 07  
-            sta __c000         ; $faeb: 8d 00 c0  
+            sta chr_s2l        ; $faeb: 8d 00 c0  
             lsr                ; $faee: 4a        
             lsr                ; $faef: 4a        
             lsr                ; $faf0: 4a        
             lsr                ; $faf1: 4a        
-            sta __c001         ; $faf2: 8d 01 c0  
+            sta chr_s2h        ; $faf2: 8d 01 c0  
             lda $07f3          ; $faf5: ad f3 07  
-            sta __c001+1       ; $faf8: 8d 02 c0  
+            sta chr_s3l        ; $faf8: 8d 02 c0  
             lsr                ; $fafb: 4a        
             lsr                ; $fafc: 4a        
             lsr                ; $fafd: 4a        
             lsr                ; $fafe: 4a        
-            sta __c003         ; $faff: 8d 03 c0  
+            sta chr_s3h        ; $faff: 8d 03 c0  
             lda $07f4          ; $fb02: ad f4 07  
-            sta __d000         ; $fb05: 8d 00 d0  
+            sta chr_s4l        ; $fb05: 8d 00 d0  
             lsr                ; $fb08: 4a        
             lsr                ; $fb09: 4a        
             lsr                ; $fb0a: 4a        
             lsr                ; $fb0b: 4a        
-            sta __d001         ; $fb0c: 8d 01 d0  
+            sta chr_s4h        ; $fb0c: 8d 01 d0  
             lda $07f5          ; $fb0f: ad f5 07  
-            sta __d002         ; $fb12: 8d 02 d0  
+            sta chr_s5l        ; $fb12: 8d 02 d0  
             lsr                ; $fb15: 4a        
             lsr                ; $fb16: 4a        
             lsr                ; $fb17: 4a        
             lsr                ; $fb18: 4a        
-            sta __d003         ; $fb19: 8d 03 d0  
+            sta chr_s5h        ; $fb19: 8d 03 d0  
             lda $07f6          ; $fb1c: ad f6 07  
-            sta __e000         ; $fb1f: 8d 00 e0  
+            sta chr_s6l        ; $fb1f: 8d 00 e0  
             lsr                ; $fb22: 4a        
             lsr                ; $fb23: 4a        
             lsr                ; $fb24: 4a        
             lsr                ; $fb25: 4a        
-            sta __e001         ; $fb26: 8d 01 e0  
+            sta chr_s6h        ; $fb26: 8d 01 e0  
             lda $07f7          ; $fb29: ad f7 07  
-            sta __e002         ; $fb2c: 8d 02 e0  
+            sta chr_s7l        ; $fb2c: 8d 02 e0  
             lsr                ; $fb2f: 4a        
             lsr                ; $fb30: 4a        
             lsr                ; $fb31: 4a        
             lsr                ; $fb32: 4a        
-            sta __e003         ; $fb33: 8d 03 e0  
+            sta chr_s7h        ; $fb33: 8d 03 e0  
             lda #$00           ; $fb36: a9 00     
             sta $9000          ; $fb38: 8d 00 90  
             rts                ; $fb3b: 60     
