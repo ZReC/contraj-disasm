@@ -4273,9 +4273,9 @@ __dff6:     tya                ; $dff6: 98
             adc $fc            ; $dffa: 65 fc     
             bcs __e002         ; $dffc: b0 04     
             cmp #$f0           ; $dffe: c9 f0     
-            bcc $E004          ; $e000: 90 02     
+            bcc __e004         ; $e000: 90 02     
 __e002:     adc #$0F           ; $e002: 69 0f     
-            sta $11            ; $e004: 85 11     
+__e004:     sta $11            ; $e004: 85 11     
             lda $13            ; $e006: a5 13     
             clc                ; $e008: 18        
             adc $fd            ; $e009: 65 fd     
@@ -7940,6 +7940,8 @@ __face:     lda $07f0          ; $face: ad f0 07
 ;-------------------------------------------------------------------------------
 ; Vector Table
 ;-------------------------------------------------------------------------------
-vectors:    .dw nmi                        ; $fffa: 89 f8     Vector table
-            .dw reset                      ; $fffc: 0d f8     Vector table
-            .dw irq                        ; $fffe: e1 f8     Vector table
+            .org $fffa
+vectors:
+            .dw nmi   ; vblank
+            .dw reset ; boot and reset
+            .dw irq   ; unused
